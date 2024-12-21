@@ -98,7 +98,7 @@
     <script>
         async function fetchData() {
             try {
-                const response = await fetch('http://localhost:5000/data');
+                const response = await fetch('https://api-h429.onrender.com/data');
                 const data = await response.json();
                 const stats = data.shares[0];
 
