@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            color: #0077cc;
+        }
+        .card {
+            background: #0077cc;
+            color: #fff;
+            padding: 1.5rem;
+            margin: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h2 {
+            margin: 0.5rem 0;
+        }
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #0077cc;
+            color: #fff;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mining Pool Dashboard</h1>
+            <p>Live statistics from your mining pool</p>
+        </div>
+        <div class="grid">
+            <div class="card" id="its">
+                <h2>Its</h2>
+                <p>Loading...</p>
+            </div>
+            <div class="card" id="totalShare">
+                <h2>Total Shares</h2>
+                <p>Loading...</p>
+            </div>
+            <div class="card" id="estIncome">
+                <h2>Estimated Income</h2>
+                <p>Loading...</p>
+            </div>
+            <div class="card" id="estQUS">
+                <h2>Estimated QUS</h2>
+                <p>Loading...</p>
+            </div>
+            <div class="card" id="estUSD">
+                <h2>Estimated USD</h2>
+                <p>Loading...</p>
+            </div>
+            <div class="card" id="shareRate">
+                <h2>Share Rate</h2>
+                <p>Loading...</p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>Dashboard powered by your mining pool API</p>
+    </footer>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('http://localhost:5000/data');
+                const data = await response.json();
+                const stats = data.shares[0];
+
+                document.getElementById('its').querySelector('p').textContent = stats.Its;
+                document.getElementById('totalShare').querySelector('p').textContent = stats.totalShare;
+                document.getElementById('estIncome').querySelector('p').textContent = stats.EstIncome + ' BTC';
+                document.getElementById('estQUS').querySelector('p').textContent = stats.EstQUS + ' QUS';
+                document.getElementById('estUSD').querySelector('p').textContent = '$' + stats.EstUSD;
+                document.getElementById('shareRate').querySelector('p').textContent = stats.ShareRate + ' /s';
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Refresh data every 60 seconds
+        fetchData();
+        setInterval(fetchData, 60000);
+    </script>
+</body>
+</html>
